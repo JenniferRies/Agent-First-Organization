@@ -63,5 +63,5 @@ You can now deploy the `build` folder **almost anywhere** easily, **for free** o
 ## Deploy to production
 
 1. Open terminal in this folder
-2. Set up environment variable `GIT_USER=<user_github_user_name>`
+2. Set up environment variable `GIT_USER=<your_github_user_name>`
 3. Run ```npm run deploy```
