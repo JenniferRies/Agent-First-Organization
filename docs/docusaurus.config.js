@@ -87,6 +87,8 @@ const config = {
         logo: {
           alt: 'Arklex.AI Logo',
           src: 'img/articulateai.png',
+          href: 'https://www.arklex.ai/',
+          target: '_self'
         },
         items: [
           {
