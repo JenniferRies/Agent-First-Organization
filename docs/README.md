@@ -59,3 +59,9 @@ npm run serve
 The `build` folder is now served at [http://localhost:3000/](http://localhost:3000/).
 
 You can now deploy the `build` folder **almost anywhere** easily, **for free** or very small cost (read the **[Deployment Guide](https://docusaurus.io/docs/deployment)**).
+
+## Deploy to production
+
+1. Open terminal in this folder
+2. Set up environment variable `GIT_USER=<user_github_user_name>`
+3. Run ```npm run deploy```
