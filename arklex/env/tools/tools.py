@@ -146,7 +146,7 @@ class Tool:
                     "name": self.name,
                     "content": response
                 })
-                if "error" in response:
+                if "error" in response: # TODO: use exception
                     max_tries -= 1
                     continue
                 state["status"] = StatusEnum.COMPLETE.value if self.isComplete(response) else StatusEnum.INCOMPLETE.value
