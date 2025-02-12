@@ -70,7 +70,7 @@ if __name__ == "__main__":
     parser.add_argument('--output-dir', type=str, default="./examples/test")
     parser.add_argument('--model', type=str, default=MODEL["model_type_or_path"])
     parser.add_argument('--log-level', type=str, default="INFO", choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"])
-    parser.add_argument('--task', type=str, choices=["gen_taskgraph", "init", "all"], default="gen_taskgraph")
+    parser.add_argument('--task', type=str, choices=["gen_taskgraph", "init", "all"], default="all")
     args = parser.parse_args()
     MODEL["model_type_or_path"] = args.model
     log_level = getattr(logging, args.log_level.upper(), logging.INFO)
