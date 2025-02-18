@@ -33,7 +33,7 @@ errors = [
 ]
 
 @register_tool(description, slots, outputs, lambda x: x not in errors)
-def find_user_id_by_email(email: str, **kwargs) -> str:
+def get_user_id_from_email(email: str, **kwargs) -> str:
     shop_url = kwargs.get("shop_url")
     api_version = kwargs.get("api_version")
     token = kwargs.get("token")
@@ -55,7 +55,7 @@ def find_user_id_by_email(email: str, **kwargs) -> str:
                         }}
                     }}
                 }}
-                """)
+            """)
         nodes = json.loads(response)["data"]["customers"]["edges"]
         if len(nodes) == 1:
             user_id = nodes[0]["node"]["id"]

@@ -55,3 +55,18 @@ def cursorify(kwargs):
             nav_param = f"last: {limit}, before: \"{pageInfo['startCursor']}\""
     
     return nav_param, True
+
+def nav_get_all(func, *args, **kwargs):
+    all_results = []
+    while True:
+        print(*args)
+        results, pageInfo = func(*args[:-1], **kwargs)
+        for i in args[-1]:
+            results = results[i]    
+        all_results.extend(results)
+        if not pageInfo['hasNextPage']:
+            break
+        kwargs['pageInfo'] = pageInfo
+        kwargs['navigate'] = 'next'
+    return all_results
+    

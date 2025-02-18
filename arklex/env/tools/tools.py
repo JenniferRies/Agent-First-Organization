@@ -26,6 +26,9 @@ def register_tool(desc, slots=[], outputs=[], isComplete=lambda x: True):
         return tool
     return inner
 
+def untool(func):
+    return func().func
+
 class Tool:
     def __init__(self, func, name, description, slots, outputs, isComplete):
         self.func = func
