@@ -1,5 +1,6 @@
 from typing import Any, Dict
 
+from arklex.env.exceptions import PermissionDeniedError
 from arklex.env.tools.tools import register_tool
 
 # general GraphQL navigation utilities
@@ -77,4 +78,4 @@ def preview_orders(refresh_token: str, **kwargs) -> str:
         return response['nodes'], pageInfo
         
     except Exception:
-        raise PermissionError 
+        raise PermissionDeniedError()

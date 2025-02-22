@@ -13,6 +13,7 @@ This file contains the code for getting the details of a user.
 """
 from typing import Any, Dict
 
+from arklex.env.exceptions import PermissionDeniedError
 from arklex.env.tools.tools import register_tool
 
 # Customer API
@@ -85,4 +86,4 @@ def get_user_details(refresh_token: str, **kwargs) -> str:
         return response, pageInfo
     
     except Exception:
-        raise PermissionError
+        raise PermissionDeniedError()
