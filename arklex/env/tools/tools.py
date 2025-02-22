@@ -81,6 +81,9 @@ class Tool:
             return response, True
         except FunctionCallError as e:
             return str(e), False
+        except Exception as e:
+            logger.error("Unexpected error: " + e)
+            return str(e), False
         
     def _execute(self, state: MessageState, **fixed_args):
         # if this tool has been called before, then load the previous slots status

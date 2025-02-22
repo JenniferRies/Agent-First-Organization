@@ -101,14 +101,14 @@ class Env():
             message_state["metadata"]["worker"] = self.workers
             logger.info(f"{self.workers[id]['name']} worker selected")
             worker: BaseWorker = self.workers[id]["execute"]()
-            response_state = worker.execute(message_state)
+            response_state, is_completed = worker._worker_call(lambda: worker.execute(message_state))
             call_id = str(uuid.uuid4())
             params["history"].append({'content': None, 'role': 'assistant', 'tool_calls': [{'function': {'arguments': "", 'name': self.id2name[id]}, 'id': call_id, 'type': 'function'}], 'function_call': None})
             params["history"].append({
                         "role": "tool",
                         "tool_call_id": call_id,
                         "name": self.id2name[id],
-                        "content": response_state["response"]
+                        "content": response_state["response"] if is_completed else response_state
             })
         else:
             logger.info("planner selected")

@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from arklex.env.exceptions import FunctionCallError
 from arklex.utils.graph_state import MessageState
 
 
@@ -18,6 +19,16 @@ class BaseWorker(ABC):
     def __repr__(self):
         return f"{self.__class__.__name__}"
     
+    def _worker_call(self, worker_call):
+        """Perform worker call and return (response: string, is_completed: bool)"""
+        try:
+            response_state = worker_call()
+            return response_state, True
+        except FunctionCallError as e:
+            return str(e), False
+        except Exception as e:
+            return str(e), False
+        
     @abstractmethod
     def execute(self, msg_state: MessageState):
         pass
