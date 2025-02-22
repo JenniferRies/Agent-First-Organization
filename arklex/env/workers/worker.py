@@ -19,10 +19,10 @@ class BaseWorker(ABC):
     def __repr__(self):
         return f"{self.__class__.__name__}"
     
-    def _worker_call(self, worker_call):
+    def worker_call(self, func):
         """Perform worker call and return (response: string, is_completed: bool)"""
         try:
-            response_state = worker_call()
+            response_state = func()
             return response_state, True
         except FunctionCallError as e:
             return str(e), False

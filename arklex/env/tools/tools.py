@@ -74,10 +74,10 @@ class Tool:
     def init_slotfilling(self, slotfillapi: SlotFilling):
         self.slotfillapi = slotfillapi
 
-    def _tool_call(self, tool_call):
+    def _tool_call(self, func):
         """Perform tool call and return (response: string, is_completed: bool)"""
         try:
-            response = tool_call()
+            response = func()
             return response, True
         except FunctionCallError as e:
             return str(e), False
