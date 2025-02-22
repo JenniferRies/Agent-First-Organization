@@ -82,7 +82,7 @@ class Tool:
         except FunctionCallError as e:
             return str(e), False
         except Exception as e:
-            logger.error("Unexpected error: " + e)
+            logger.error("Unexpected error: " + str(e))
             return str(e), False
         
     def _execute(self, state: MessageState, **fixed_args):

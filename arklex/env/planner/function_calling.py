@@ -141,7 +141,7 @@ class FunctionCallingPlanner:
         except FunctionCallError as e:
             return old_msg_history, RESPOND_ACTION_NAME, str(e), False
         except Exception as e:
-            logger.error("Unexpected error: " + e)
+            logger.error("Unexpected error: " + str(e))
             return old_msg_history, RESPOND_ACTION_NAME, str(e), False
         
     def execute(self, msg_state: MessageState, msg_history):
