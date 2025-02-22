@@ -7,12 +7,19 @@ class FunctionCallError(Exception):
         super().__init__(message)
 
 
-
-class OutputError(FunctionCallError):
-    """Raised when there is issue in LLM-generated output."""
+class FunctionFailureError(FunctionCallError):
+    """Raised when a function fails to perform its intended action."""
     def __init__(self, message: str = None):
         if message is None:
-            message = "There was an error with the LLM output."
+            message = "The function failed to perform as expected."
+        super().__init__(message)
+
+
+class OutputError(FunctionCallError):
+    """Raised when the output is not the one expected."""
+    def __init__(self, message: str = None):
+        if message is None:
+            message = "The output is not expected."
         super().__init__(message)
 
 class DataNotFoundError(FunctionCallError):
@@ -48,6 +55,13 @@ class AuthenticationError(FunctionCallError):
     def __init__(self, message: str = None):
         if message is None:
             message = "Authentication or authorization failed during function execution."
+        super().__init__(message)
+
+class PermissionDeniedError(FunctionCallError):
+    """Raised when the operation cannot be performed due to insufficient permissions."""
+    def __init__(self, message: str = None):
+        if message is None:
+            message = "Permission denied: insufficient privileges to perform the requested operation."
         super().__init__(message)
 
 

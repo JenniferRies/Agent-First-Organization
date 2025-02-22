@@ -75,7 +75,7 @@ class Tool:
         self.slotfillapi = slotfillapi
 
     def _tool_call(self, func):
-        """Perform tool call and return (response: string, is_completed: bool)"""
+        """Perform tool call and return (response: string, is_successful: bool)"""
         try:
             response = func()
             return response, True
@@ -131,7 +131,7 @@ class Tool:
                                 raise ValueError(f"Unable to parse slot value: {slot.value}")
                 kwargs = {slot.name: slot.value for slot in slots}
                 combined_kwargs = {**kwargs, **fixed_args}
-                response, is_completed = self._tool_call(lambda: self.func(**combined_kwargs))
+                response, is_successful = self._tool_call(lambda: self.func(**combined_kwargs))
                 logger.info(f"Tool {self.name} response: {response}")
                 call_id = str(uuid.uuid4())
                 state["trajectory"].append({
@@ -155,10 +155,12 @@ class Tool:
                     "name": self.name,
                     "content": response
                 })
-                if not is_completed:
+                if not is_successful:
                     max_tries -= 1
                     continue
-                state["status"] = StatusEnum.COMPLETE.value if is_completed else StatusEnum.INCOMPLETE.value
+                state["status"] = StatusEnum.COMPLETE.value \
+                                if is_successful and self.isComplete(response) \
+                                else StatusEnum.INCOMPLETE.value
                 
         state["message_flow"] = response
         state["slots"][self.name] = slots
