@@ -155,7 +155,7 @@ class Tool:
                     "name": self.name,
                     "content": response
                 })
-                if not is_successful:
+                if not is_successful or "error" in response: # TODO: remove the second condition, use custom exception only
                     max_tries -= 1
                     continue
                 state["status"] = StatusEnum.COMPLETE.value \
