@@ -9,14 +9,21 @@ class FunctionCallError(Exception):
 
 
 class OutputError(FunctionCallError):
-    """General error for issues in LLM-generated output."""
+    """Raised when there is issue in LLM-generated output."""
     def __init__(self, message: str = None):
         if message is None:
             message = "There was an error with the LLM output."
         super().__init__(message)
 
+class DataNotFoundError(FunctionCallError):
+    """Raised when expected data is not found."""
+    def __init__(self, message: str = None):
+        if message is None:
+            message = "Expected data was not found."
+        super().__init__(message)
 
-class ParameterMissingError(OutputError):
+
+class ParameterMissingError(FunctionCallError):
     """Raised when there is a missing parameter."""
     def __init__(self, parameter: str, message: str = None):
         if message is None:
@@ -25,7 +32,7 @@ class ParameterMissingError(OutputError):
         self.parameter = parameter
 
 
-class ParameterMismatchError(OutputError):
+class ParameterMismatchError(FunctionCallError):
     """Raised when the parameters provided do not match the expected schema or types."""
     def __init__(self, parameter: str, expected: str, received: str, message: str = None):
         if message is None:
@@ -36,34 +43,7 @@ class ParameterMismatchError(OutputError):
         self.expected = expected
         self.received = received
 
-
-
-
-class RuntimeFunctionError(FunctionCallError):
-    """General error for issues encountered during function/tool execution."""
-    def __init__(self, message: str = None):
-        if message is None:
-            message = "An error occurred during the execution of a function or tool."
-        super().__init__(message)
-
-
-class InternalFunctionError(RuntimeFunctionError):
-    """Raised for internal errors like runtime exceptions or logic errors within the function."""
-    def __init__(self, message: str = None):
-        if message is None:
-            message = "An internal error occurred during function execution."
-        super().__init__(message)
-
-
-class NetworkError(RuntimeFunctionError):
-    """Raised for network-related issues (timeouts, connection failures, etc.)."""
-    def __init__(self, message: str = None):
-        if message is None:
-            message = "A network error occurred during function execution."
-        super().__init__(message)
-
-
-class AuthenticationError(RuntimeFunctionError):
+class AuthenticationError(FunctionCallError):
     """Raised when authentication or authorization fails."""
     def __init__(self, message: str = None):
         if message is None:
@@ -71,7 +51,7 @@ class AuthenticationError(RuntimeFunctionError):
         super().__init__(message)
 
 
-class RateLimitError(RuntimeFunctionError):
+class RateLimitError(FunctionCallError):
     """Raised when API rate limits or quotas are exceeded."""
     def __init__(self, message: str = None):
         if message is None:
@@ -79,7 +59,7 @@ class RateLimitError(RuntimeFunctionError):
         super().__init__(message)
 
 
-class HTTPError(RuntimeFunctionError):
+class HTTPError(FunctionCallError):
     """Raised for HTTP errors such as 4xx or 5xx status codes."""
     def __init__(self, status_code: int = None, message: str = None):
         if message is None:
@@ -91,7 +71,7 @@ class HTTPError(RuntimeFunctionError):
         self.status_code = status_code
 
 
-class APISpecificError(RuntimeFunctionError):
+class APISpecificError(FunctionCallError):
     """Raised for service-specific error responses from an API."""
     def __init__(self, error_code: int = None, message: str = None):
         if message is None:
@@ -102,17 +82,7 @@ class APISpecificError(RuntimeFunctionError):
         super().__init__(message)
         self.error_code = error_code
 
-
-class DependencyError(RuntimeFunctionError):
-    """Raised when a required external dependency or library is missing."""
-    def __init__(self, dependency: str, message: str = None):
-        if message is None:
-            message = f"The required dependency '{dependency}' is missing."
-        super().__init__(message)
-        self.dependency = dependency
-
-
-class TimeoutError(RuntimeFunctionError):
+class TimeoutError(FunctionCallError):
     """Raised when a function or tool call times out."""
     def __init__(self, timeout: float = None, message: str = None):
         if message is None:
@@ -122,26 +92,6 @@ class TimeoutError(RuntimeFunctionError):
                 message = "Function call timed out."
         super().__init__(message)
         self.timeout = timeout
-
-
-class HangingCallError(RuntimeFunctionError):
-    """Raised when a function/tool call hangs indefinitely without a response."""
-    def __init__(self, message: str = None):
-        if message is None:
-            message = "Function call appears to be hanging without a response."
-        super().__init__(message)
-
-
-
-
-class UnforeseenException(FunctionCallError):
-    """Raised for unforeseen or unexpected exceptions not covered by other error types."""
-    def __init__(self, original_exception: Exception, message: str = None):
-        if message is None:
-            message = f"An unforeseen exception occurred: {original_exception}"
-        super().__init__(message)
-        self.original_exception = original_exception
-
 
 class ErrorHandlingFailure(FunctionCallError):
     """Raised when the error handling mechanism itself fails."""
