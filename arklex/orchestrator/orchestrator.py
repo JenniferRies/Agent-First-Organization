@@ -175,6 +175,7 @@ class AgentOrg:
         
         response_state, params = self.env.step(node_info["id"], message_state, params)
         
+        
         logger.info(f"{response_state=}")
 
         tool_response = params.get("metadata", {}).get("tool_response", {})
@@ -185,6 +186,7 @@ class AgentOrg:
                 outputs={"metadata": params.get("metadata"), **response_state}, 
                 metadata={"chat_id": metadata.get("chat_id"), "turn_id": metadata.get("turn_id")}
             )
+
 
         # ReAct framework to decide whether return to user or continue
         FINISH = False
@@ -210,6 +212,7 @@ class AgentOrg:
             if node_info["id"] not in self.env.workers and node_info["id"] not in self.env.tools:
                 message_state = MessageState(
                     sys_instruct=sys_instruct, 
+                    bot_config=bot_config,
                     user_message=user_message, 
                     orchestrator_message=orchestrator_message, 
                     trajectory=params["history"], 
