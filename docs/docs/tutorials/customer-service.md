@@ -2,6 +2,8 @@
 
 *Enhance your agents with Retrieval Augmented Generation (RAG)*
 
+Follow the video tutorial: https://youtu.be/y1P2Ethvy0I
+
 ## Intro
 
 In this tutorial, we'll walk through building a basic customer service agent using **Arklex Agent First Organization**'s framework. This agent will be able to handle common customer inquiries, such as answering FAQs, identifying customer preferences, and requesting customer's contact information.
