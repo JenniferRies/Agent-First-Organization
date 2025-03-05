@@ -116,6 +116,7 @@ class Env():
                             "name": self.id2name[id],
                             "content": response_state["response"]
                 })
+
         else:
             logger.info("planner selected")
             action, response_state, msg_history = self.planner.execute(message_state, params["history"])
