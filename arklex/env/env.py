@@ -104,7 +104,7 @@ class Env():
 
             # If message_state contains "planner_selected": True, remove this key and then invoke FunctionCallingPlanner;
             # otherwise, DefaultWorker selected and invoked candidate worker instead of planner, so continue as normal
-            if response_state.get("planner_selected", False):
+            if response_state.pop("planner_selected", False): # Remove this flag if present in response_state
                 logger.info("FunctionCallingPlanner selected by DefaultWorker")
                 action, response_state, msg_history = self.planner.execute(message_state, params["history"])
             else:

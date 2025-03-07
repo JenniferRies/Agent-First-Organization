@@ -10,6 +10,7 @@ from arklex.utils.utils import chunk_string
 from arklex.utils.graph_state import MessageState
 from arklex.utils.model_config import MODEL
 from arklex.utils.model_provider_config import PROVIDER_MAP
+from arklex.orchestrator.prompts import PLANNER_SELECTION_PROMPT
 
 
 logger = logging.getLogger(__name__)
@@ -58,7 +59,7 @@ class DefaultWorker(BaseWorker):
 
         # Hierarchical selection process for determining whether worker selected by DefaultWorker is sufficient,
         # or if FunctionCallingPlanner must be invoked instead
-        sys_prompt = """Given the conversation history and the proposed worker, your job is to determine whether or not the proposed worker is suitable for satisfying the user's request. Reply with 'yes' if and only if the proposed worker is suitable for solving the request. Otherwise, reply with 'no' if the proposed worker is not sufficient (for instance, if a set of tools is required for satisfying the request). Conversation history: {chat_history_str} Proposed worker info: {candidate_worker_info} Answer: """
+        sys_prompt = PLANNER_SELECTION_PROMPT
         available_workers = {id: resource for id, resource in msg_state["metadata"]["worker"].items() if resource["name"] != "DefaultWorker"}
         worker_info_str = f"Worker name: {available_workers[worker_id]['name']}\nDescription: {available_workers[worker_id]['description']}"
         prompt = PromptTemplate.from_template(sys_prompt)
