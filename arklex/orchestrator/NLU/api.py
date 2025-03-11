@@ -1,5 +1,6 @@
 import sys
 import os
+import json
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parents[3]))
 
@@ -54,7 +55,10 @@ class NLUModelAPI ():
                     temperature = 0.7,
                 )
             response = res.choices[0].message.content
-        
+            if model['llm_provider'] == 'anthropic':
+                    response_data = json.loads(response)
+                    response = response_data.get('intent', '')
+
         logger.info(f"response for {debug_text} is \n{response}")
         return response
 
@@ -152,7 +156,7 @@ class SlotFillModelAPI():
             n=1,
             temperature = 0.7,
         )
-        res.choices[0].message.refusal = None 
+        res.choices[0].message.refusal = None       
         parsed = parse_chat_completion(response_format=format,
                                     input_tools = NOT_GIVEN,
                                  chat_completion=res)
@@ -195,7 +199,7 @@ class SlotFillModelAPI():
         model
     ) -> Verification:
         reformat_slot = {key: value for key, value in slot.items() if key in ["name", "type", "value", "enum", "description", "required"]}
-        system_prompt = f"Given the conversation, definition and extracted value of each dialog state, decide whether the following dialog states values need further verification from the user. If there is a list of enum value, which means the value has to be chosen from the enum list. Only Return boolean value: True or False. \nDialogue Statues:\n{reformat_slot}\nConversation:\n{chat_history_str}\n\n"
+        system_prompt = f"Given the conversation, definition and extracted value of each dialog state, decide whether the following dialog states values need further verification from the user. Verification is needed for expressions which may cause confusion. If it is an accurate information extracted, no verification is needed. If there is a list of enum value, which means the value has to be chosen from the enum list. Only Return boolean value: True or False. \nDialogue Statues:\n{reformat_slot}\nConversation:\n{chat_history_str}\n\n"
         response = self.get_response(
             system_prompt, model,debug_text="verify slots", format=Verification
         )
