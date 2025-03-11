@@ -35,7 +35,7 @@
             "2",
             {
                 "resource": {
-                    "id": "fa0495bf-133c-4915-b86e-dbdcb34e2f46",
+                    "id": "NestedGraph",
                     "name": "NestedGraph"
                 },
                 "attribute": {
@@ -69,27 +69,12 @@
                     "name": "MessageWorker"
                 },
                 "attribute": {
-                    "value": "Authenticate user",
-                    "task": "Authentication",
-                    "directed": false
-                },
-                "limit": 1,
-                "type": "start"
-            }
-        ],
-        [
-            "5",
-            {
-                "resource": {
-                    "id": "26bb6634-3bee-417d-ad75-23269ac17bc3",
-                    "name": "MessageWorker"
-                },
-                "attribute": {
                     "value": "Are you Luigi?",
                     "task": "Ask if user is Luigi",
                     "directed": false
                 },
-                "limit": 1
+                "limit": 1,
+                "type": "nested_graph_start"
             }
         ],
         [
@@ -102,7 +87,7 @@
                 "attribute": {
                     "value": "Hi Luigi, I will do immediately what you have requested",
                     "task": "Give access to the user.",
-                    "directed": false
+                    "directed": true
                 },
                 "limit": 1
             }
@@ -117,7 +102,7 @@
                 "attribute": {
                     "value": "I won't do anything if you're not Luigi!!!",
                     "task": "Don't give access to the user.",
-                    "directed": false
+                    "directed": true
                 },
                 "limit": 1
             }
@@ -178,9 +163,9 @@
         ],
         [
             "4",
-            "5",
+            "6",
             {
-                "intent": "None",
+                "intent": "User answer yes",
                 "attribute": {
                     "weight": 1,
                     "pred": false,
@@ -190,20 +175,7 @@
             }
         ],
         [
-            "5",
-            "6",
-            {
-                "intent": "User answer yes",
-                "attribute": {
-                    "weight": 1,
-                    "pred": true,
-                    "definition": "",
-                    "sample_utterances": []
-                }
-            }
-        ],
-        [
-            "5",
+            "4",
             "7",
             {
                 "intent": "User answer no",

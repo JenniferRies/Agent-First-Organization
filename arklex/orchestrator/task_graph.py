@@ -7,6 +7,7 @@ import numpy as np
 from langchain_openai import ChatOpenAI
 
 
+from arklex.env.nested_graph.nested_graph import NESTED_GRAPH_ID, NestedGraph
 from arklex.utils.model_provider_config import PROVIDER_MAP
 from arklex.utils.utils import normalize, str_similarity, format_chat_history
 from arklex.utils.graph_state import StatusEnum
@@ -143,6 +144,7 @@ class TaskGraph(TaskGraphBase):
         logger.info(f"intent in _get_node: {intent}")
         candidates_intents = collections.defaultdict(list)
         node_info = self.graph.nodes[sample_node]
+        print("12312341324", node_info)
         node_name = node_info["resource"]["name"]
         id = node_info["resource"]["id"]
         available_nodes[sample_node]["limit"] -= 1
@@ -466,11 +468,23 @@ class TaskGraph(TaskGraphBase):
     def postprocess_node(self, node):
         node_info = node[0]
         params = node[1]
-
+        if node_info["id"] == NESTED_GRAPH_ID:
+            print("!"*100)
+            nested_graph_node = NestedGraph(
+                task=node_info["attribute"]["task"],
+                value=node_info["attribute"]["value"],
+            )
+            next_node_id = nested_graph_node.get_nested_graph_start_node_id()
+            next_node = self.graph.nodes.get(next_node_id)
+            node_info = {"id": next_node["resource"]["id"], "name": next_node["resource"]["name"], "attribute": next_node["attribute"]}
         dialog_states = params.get("dialog_states", {})
         # update the dialog states
         if dialog_states.get(node_info["id"]):
             dialog_states = self.slotfillapi.execute(dialog_states.get(node_info["id"]), format_chat_history(params.get("history")), params.get("metadata", {}))
         params["dialog_states"] = dialog_states
-
+        print("*"*100)
+        print(node_info)
+        print(params["curr_node"])
+        print(params["available_nodes"])
+        print(params["available_intents"])
         return node_info, params

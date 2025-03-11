@@ -47,6 +47,7 @@ class AgentOrg:
         self.__eos_token = "\n"
         self.task_graph = TaskGraph("taskgraph", self.product_kwargs)
         self.env = env
+        
 
     def generate_next_step(
         self, messages: List[Dict[str, Any]], text:str
@@ -60,7 +61,7 @@ class AgentOrg:
                 ("system",str(messages[0]['content']),),
                 ("human", ""),
             ]
-        res = llm.invoke(messages)        
+        res = llm.invoke(messages)
         message = aimessage_to_dict(res)
         action_str = message['content'].split("Action:")[-1].strip()
         try:
@@ -102,6 +103,7 @@ class AgentOrg:
         else:
             params["history"].append(chat_history_copy[-2])
             params["history"].append(chat_history_copy[-1])
+        params["path"] = params.get("path", [])
 
 
         ##### TaskGraph Chain
@@ -209,7 +211,8 @@ class AgentOrg:
             node_info, params = taskgraph_chain.invoke(taskgraph_inputs)
             logger.info("=============node_info=============")
             logger.info(f"The while node info is : {node_info}")
-            if node_info["id"] not in self.env.workers and node_info["id"] not in self.env.tools:
+            if node_info["id"] not in self.env.workers and \
+                node_info["id"] not in self.env.tools:
                 message_state = MessageState(
                     sys_instruct=sys_instruct, 
                     bot_config=bot_config,
@@ -247,7 +250,7 @@ class AgentOrg:
                 ]
                 _, action, _ = self.generate_next_step(messages, text)
                 logger.info("Predicted action: " + action)
-                if action == RESPOND_ACTION_NAME:
+                if  action == RESPOND_ACTION_NAME:
                     FINISH = True
                 else:
                     message_state["response"] = "" # clear the response cache generated from the previous steps in the same turn
