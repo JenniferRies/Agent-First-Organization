@@ -103,11 +103,13 @@ if __name__ == "__main__":
         
     history = []
     params = {}
+    params["path"] = []
     user_prefix = "user"
     worker_prefix = "assistant"
     for node in config['nodes']:
         if node[1].get("type", "") == 'start':
             start_message = node[1]['attribute']["value"]
+            params["path"].append({"node_id": node[0], "skipped": False})
             break
     history.append({"role": worker_prefix, "content": start_message})
     pprint_with_color(f"Bot: {start_message}")

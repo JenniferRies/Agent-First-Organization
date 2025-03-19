@@ -145,9 +145,22 @@ class TaskGraph(TaskGraphBase):
     def _get_node(self, sample_node, available_nodes, available_intents, params, intent=None):
         logger.info(f"available_intents in _get_node: {available_intents}")
         logger.info(f"intent in _get_node: {intent}")
+
         candidates_intents = collections.defaultdict(list)
         node_info = self.graph.nodes[sample_node]
-        print("12312341324", node_info)
+        # NESTED GRAPH
+        if node_info["resource"]["id"] == NESTED_GRAPH_ID: # nested graph node
+            nested_graph_node = NestedGraph(
+                task=node_info["attribute"]["task"],
+                value=node_info["attribute"]["value"],
+            )
+            next_node_id = nested_graph_node.get_nested_graph_start_node_id()
+            params["path"].append({"node_id": sample_node, "skipped": False})
+            node_info = self.graph.nodes[next_node_id]
+            sample_node = next_node_id
+        
+            
+        
         node_name = node_info["resource"]["name"]
         id = node_info["resource"]["id"]
         available_nodes[sample_node]["limit"] -= 1
@@ -164,6 +177,7 @@ class TaskGraph(TaskGraphBase):
         # This will be used to check whether we skip the worker or not, which is handled by the task graph framework
         skip = self._check_skip(node_info)
         logger.info(f"skip current node {sample_node}: {skip}")
+        params["path"].append({"node_id": sample_node, "skipped": skip})
         if skip: # continue check the candidate intents under this node
             node_info = {"id": None, "name": None, "attribute": None}
             for u, v, data in self.graph.out_edges(sample_node, data=True):
@@ -249,12 +263,15 @@ class TaskGraph(TaskGraphBase):
             available_nodes = params.get("available_nodes")
         
         if not list(self.graph.successors(curr_node)):  # leaf node
-            if flow_stack:  # there is previous unfinished flow
+            curr_node, params = NestedGraph.get_nested_graph_component_node(params, self.graph.nodes)
+            if flow_stack and not curr_node:  # there is previous unfinished flow
                 curr_node = flow_stack.pop()
         
         next_node = curr_node  # initialize next node as curr node
         params["curr_node"] = next_node
         logger.info(f"curr_node: {next_node}")
+
+
 
         # Get local intents of the curr_node
         candidates_intents = collections.defaultdict(list)
@@ -268,7 +285,7 @@ class TaskGraph(TaskGraphBase):
         logger.info(f"candidates_intents: {candidates_intents}")
         # whether has checked global intent or not, since 1 turn only need to check global intent for 1 time
         global_intent_checked = False
-
+        
         if not candidates_intents:  # no local intent under the current node
             logger.info(f"no local intent under the current node")
             # if there is no intents available in the whole graph except unsure_intent
@@ -472,23 +489,11 @@ class TaskGraph(TaskGraphBase):
     def postprocess_node(self, node):
         node_info = node[0]
         params = node[1]
-        if node_info["id"] == NESTED_GRAPH_ID:
-            print("!"*100)
-            nested_graph_node = NestedGraph(
-                task=node_info["attribute"]["task"],
-                value=node_info["attribute"]["value"],
-            )
-            next_node_id = nested_graph_node.get_nested_graph_start_node_id()
-            next_node = self.graph.nodes.get(next_node_id)
-            node_info = {"id": next_node["resource"]["id"], "name": next_node["resource"]["name"], "attribute": next_node["attribute"]}
+
         dialog_states = params.get("dialog_states", {})
         # update the dialog states
         if dialog_states.get(node_info["id"]):
             dialog_states = self.slotfillapi.execute(dialog_states.get(node_info["id"]), format_chat_history(params.get("history")), params.get("metadata", {}))
         params["dialog_states"] = dialog_states
-        print("*"*100)
-        print(node_info)
-        print(params["curr_node"])
-        print(params["available_nodes"])
-        print(params["available_intents"])
+        
         return node_info, params
