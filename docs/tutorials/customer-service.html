@@ -10,7 +10,7 @@
 
 
 <script src="/js/rb2b-tracking.js"></script><link rel="stylesheet" href="/Agent-First-Organization/assets/css/styles.90788813.css">
-<script src="/Agent-First-Organization/assets/js/runtime~main.4a101cee.js" defer="defer"></script>
+<script src="/Agent-First-Organization/assets/js/runtime~main.620dafa6.js" defer="defer"></script>
 <script src="/Agent-First-Organization/assets/js/main.324b8e32.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -49,12 +49,7 @@
 <li><code>num (Optional)</code>: The number of websites that you want the chatbot to refer to for the source, defaults to one (only the url page)</li>
 </ul>
 </li>
-<li><code>tasks (Optional, List(Dict))</code>: The pre-defined list of tasks that the chatbot need to handle. If empty, the system will generate the tasks and the steps to complete the tasks based on the role, objective, domain, intro and docs fields. The more information you provide in the fields, the more accurate the tasks and steps will be generated. If you provide the tasks, it should contain the following fields:<!-- -->
-<ul>
-<li><code>task_name (Required, Str)</code>: The task that the chatbot need to handle</li>
-<li><code>steps (Required, List(Str))</code>: The steps to complete the task</li>
-</ul>
-</li>
+<li><code>tasks (Optional, List(Str))</code>: The pre-defined list of tasks that the chatbot need to handle. If empty, the system will generate the tasks and the steps to complete the tasks based on the role, objective, domain, intro and docs fields. The more information you provide in the fields, the more accurate the tasks and steps will be generated.</li>
 <li><code>workers (Required, List(Dict))</code>: The workers pre-defined under arklex/env/workers folder that you want to use for the chatbot. Each worker will be defined as a class decorated with @register_worker. Please refer to the arklex/env/workers/message_worker.py for an example. The field required for each worker object is:<!-- -->
 <ul>
 <li><code>id (Required, uuid)</code>: The unique id for the worker</li>
