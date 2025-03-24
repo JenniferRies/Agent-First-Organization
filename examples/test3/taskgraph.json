@@ -69,8 +69,8 @@
                     "name": "MessageWorker"
                 },
                 "attribute": {
-                    "value": "Are you Luigi?",
-                    "task": "Ask if user is Luigi",
+                    "value": "Please provide your authentication credentials. You can use your email or your name and zip code.",
+                    "task": "Ask user for authentication credentials; authenticate via email or name + zip code.",
                     "directed": false
                 },
                 "limit": 1,
@@ -81,12 +81,12 @@
             "6",
             {
                 "resource": {
-                    "id": "message_worker",
-                    "name": "MessageWorker"
+                    "id": "shopify/find_user_id_by_email",
+                    "name": "find_user_id_by_email"
                 },
                 "attribute": {
-                    "value": "Hi Luigi, I will do immediately what you have requested",
-                    "task": "Give access to the user.",
+                    "value": "Searching for your user ID using the provided email.",
+                    "task": "Locate user ID in the system using email.",
                     "directed": true
                 },
                 "limit": 1
@@ -96,12 +96,12 @@
             "7",
             {
                 "resource": {
-                    "id": "message_worker",
-                    "name": "MessageWorker"
+                    "id": "shopify/find_user_id_by_name_zip",
+                    "name": "find_user_id_by_name_zip"
                 },
                 "attribute": {
-                    "value": "I won't do anything if you're not Luigi!!!",
-                    "task": "Don't give access to the user.",
+                    "value": "Searching for your user ID using your name and zip code.",
+                    "task": "Locate user ID in the system using name + zip code.",
                     "directed": true
                 },
                 "limit": 1
@@ -165,7 +165,7 @@
             "4",
             "6",
             {
-                "intent": "User answer yes",
+                "intent": "User provides email",
                 "attribute": {
                     "weight": 1,
                     "pred": false,
@@ -178,7 +178,7 @@
             "4",
             "7",
             {
-                "intent": "User answer no",
+                "intent": "User provides name and zipcode",
                 "attribute": {
                     "weight": 1,
                     "pred": false,
@@ -208,7 +208,10 @@
             "path": "default_worker.py"
         }
     ],
-    "tools": [],
+    "tools": [
+        {"id": "shopify/find_user_id_by_email", "name": "find_user_id_by_email", "path": "shopify/find_user_id_by_email.py", "fixed_args": {"admin_token": "<access_token>", "shop_url": "<url>", "api_version": "<version>"}},
+        {"id": "shopify/find_user_id_by_name_zip", "name": "find_user_id_by_name_zip", "path": "shopify/find_user_id_by_name_zip.py", "fixed_args": {"admin_token": "<access_token>", "shop_url": "<url>", "api_version": "<version>"}}
+    ],
     "nluapi": "",
     "slotfillapi": ""
 }

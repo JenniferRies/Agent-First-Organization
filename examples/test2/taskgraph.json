@@ -62,6 +62,36 @@
             }
         ],
         [
+            "8",
+            {
+                "resource": {
+                    "id": "NestedGraph",
+                    "name": "NestedGraph"
+                },
+                "attribute": {
+                    "value": "4",
+                    "task": "Authenticate user",
+                    "directed": false
+                },
+                "limit": 1
+            }
+        ],
+        [
+            "9",
+            {
+                "resource": {
+                    "id": "message_worker",
+                    "name": "MessageWorker"
+                },
+                "attribute": {
+                    "value": "The conversation is over",
+                    "task": "Terminate the conversation.",
+                    "directed": false
+                },
+                "limit": 1
+            }
+        ],
+        [
             "4",
             {
                 "resource": {
@@ -85,7 +115,7 @@
                     "name": "MessageWorker"
                 },
                 "attribute": {
-                    "value": "Hi Luigi, I will do immediately what you have requested",
+                    "value": "Hi Luigi, You are authenticated, I will do immediately what you have requested",
                     "task": "Give access to the user.",
                     "directed": true
                 },
@@ -100,7 +130,7 @@
                     "name": "MessageWorker"
                 },
                 "attribute": {
-                    "value": "I won't do anything if you're not Luigi!!!",
+                    "value": "You are not authenticated. I won't do anything if you're not Luigi!!!",
                     "task": "Don't give access to the user.",
                     "directed": true
                 },
@@ -139,7 +169,46 @@
             "2",
             "3",
             {
-                "intent": "None",
+                "intent": "User is authenticated",
+                "attribute": {
+                    "weight": 1,
+                    "pred": false,
+                    "definition": "",
+                    "sample_utterances": []
+                }
+            }
+        ],
+        [
+            "2",
+            "8",
+            {
+                "intent": "User is not authenticated, retry",
+                "attribute": {
+                    "weight": 1,
+                    "pred": false,
+                    "definition": "",
+                    "sample_utterances": []
+                }
+            }
+        ],
+        [
+            "8",
+            "9",
+            {
+                "intent": "User is not authenticated",
+                "attribute": {
+                    "weight": 1,
+                    "pred": false,
+                    "definition": "",
+                    "sample_utterances": []
+                }
+            }
+        ],
+        [
+            "8",
+            "3",
+            {
+                "intent": "User is authenticated",
                 "attribute": {
                     "weight": 1,
                     "pred": false,

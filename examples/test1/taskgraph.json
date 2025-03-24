@@ -1,0 +1,102 @@
+{
+    "nodes": [
+        [
+            "0",
+            {
+                "resource": {
+                    "id": "message_worker",
+                    "name": "MessageWorker"
+                },
+                "attribute": {
+                    "value": "Hello! How can I help you?",
+                    "task": "start message",
+                    "directed": false
+                },
+                "limit": 1,
+                "type": "start"
+            }
+        ],
+        [
+            "1",
+            {
+                "resource": {
+                    "id": "message_worker",
+                    "name": "MessageWorker"
+                },
+                "attribute": {
+                    "value": "Can you please provide more details about the product you are interested in?",
+                    "task": "Use MessageWorker to ask the user for specific details about the products.",
+                    "directed": false
+                },
+                "limit": 1
+            }
+        ],
+        
+        [
+            "2",
+            {
+                "resource": {
+                    "id": "message_worker",
+                    "name": "MessageWorker"
+                },
+                "attribute": {
+                    "value": "Here is some products you might be interested in: [retrieved information].",
+                    "task": "Use MessageWorker to deliver the retrieved information to the user.",
+                    "directed": false
+                },
+                "limit": 1
+            }
+        ]
+    ],
+    "edges": [
+        [
+            "0",
+            "1",
+            {
+                "intent": "User inquires about product information",
+                "attribute": {
+                    "weight": 1,
+                    "pred": true,
+                    "definition": "",
+                    "sample_utterances": []
+                }
+            }
+        ],
+        [
+            "1",
+            "2",
+            {
+                "intent": "None",
+                "attribute": {
+                    "weight": 1,
+                    "pred": false,
+                    "definition": "",
+                    "sample_utterances": []
+                }
+            }
+        ]
+    ],
+    "role": "customer service assistant",
+    "user_objective": "",
+    "builder_objective": "",
+    "domain": "",
+    "intro": "",
+    "task_docs": [],
+    "rag_docs": [],
+    "tasks": [],
+    "workers": [
+        {
+            "id": "message_worker",
+            "name": "MessageWorker",
+            "path": "message_worker.py"
+        },
+        {
+            "id": "default_worker",
+            "name": "DefaultWorker",
+            "path": "default_worker.py"
+        }
+    ],
+    "tools": [],
+    "nluapi": "",
+    "slotfillapi": ""
+}
