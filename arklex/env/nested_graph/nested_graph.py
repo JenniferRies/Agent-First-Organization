@@ -28,5 +28,5 @@ class NestedGraph:
             prev_node_id = cur_node_id
             cur_node_i -= 1
         
-        return None, params
+        return path[-1]["node_id"], params
 
