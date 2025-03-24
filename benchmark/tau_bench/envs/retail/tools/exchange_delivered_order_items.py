@@ -19,10 +19,10 @@ class ExchangeDeliveredOrderItems(Tool):
 
         # check order exists and is delivered
         if order_id not in orders:
-            return "Error: order not found"
+            return "error: order not found"
         order = orders[order_id]
         if order["status"] != "delivered":
-            return "Error: non-delivered order cannot be exchanged"
+            return "error: non-delivered order cannot be exchanged"
 
         # check the items to be exchanged exist
         all_item_ids = [item["item_id"] for item in order["items"]]
@@ -32,7 +32,7 @@ class ExchangeDeliveredOrderItems(Tool):
 
         # check new items exist and match old items and are available
         if len(item_ids) != len(new_item_ids):
-            return "Error: the number of items to be exchanged should match"
+            return "error: the number of items to be exchanged should match"
 
         diff_price = 0
         for item_id, new_item_id in zip(item_ids, new_item_ids):
@@ -52,7 +52,7 @@ class ExchangeDeliveredOrderItems(Tool):
 
         # check payment method exists and can cover the price difference if gift card
         if payment_method_id not in users[order["user_id"]]["payment_methods"]:
-            return "Error: payment method not found"
+            return "error: payment method not found"
 
         payment_method = users[order["user_id"]]["payment_methods"][payment_method_id]
         if (

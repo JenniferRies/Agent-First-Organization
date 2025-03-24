@@ -13,7 +13,7 @@ class CancelReservation(Tool):
     ) -> str:
         reservations = data["reservations"]
         if reservation_id not in reservations:
-            return "Error: reservation not found"
+            return "error: reservation not found"
         reservation = reservations[reservation_id]
 
         # reverse the payment

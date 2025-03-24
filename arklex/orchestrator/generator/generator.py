@@ -453,12 +453,12 @@ class Generator:
                         }
                     })
                     edges.append(edge)
-                for next_task in cur_task["next"]:
+                for next_task in cur_task.get("next", []):
                     next_tasks.append((next_task, node_id))
                 node_id += 1
         
         for node_idx in nested_graph_nodes:
-            nodes[node_idx][1]["attribute"]["value"] = nested_graph_map[nodes[node_idx][1]["resource"]["name"]]
+            nodes[node_idx][1]["attribute"]["value"] = str(nested_graph_map[nodes[node_idx][1]["resource"]["name"]])
 
 
         

@@ -14,10 +14,10 @@ class UpdateReservationPassengers(Tool):
     ) -> str:
         reservations = data["reservations"]
         if reservation_id not in reservations:
-            return "Error: reservation not found"
+            return "error: reservation not found"
         reservation = reservations[reservation_id]
         if len(passengers) != len(reservation["passengers"]):
-            return "Error: number of passengers does not match"
+            return "error: number of passengers does not match"
         reservation["passengers"] = passengers
         return json.dumps(reservation)
 

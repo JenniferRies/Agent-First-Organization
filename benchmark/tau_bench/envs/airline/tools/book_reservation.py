@@ -24,7 +24,7 @@ class BookReservation(Tool):
     ) -> str:
         reservations, users = data["reservations"], data["users"]
         if user_id not in users:
-            return "Error: user not found"
+            return "error: user not found"
         user = users[user_id]
 
         # assume each task makes at most 3 reservations

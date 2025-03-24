@@ -70,7 +70,7 @@ class TauBenchResourceInitializer(DefaulResourceInitializer):
             tool_output = []
             isComplete = lambda x: True
             
-            tool = tool_lambda(Tool(tool_func, tool_key, tool_desc, tool_slots, tool_output, isComplete))
+            tool = tool_lambda(Tool(tool_func, tool_key, tool_desc, tool_slots, tool_output, isComplete, False))
 
             tool_registry[tool_id] = {
                 "name": tool_name,
@@ -223,9 +223,9 @@ if __name__ == "__main__":
     log_level = getattr(logging, args.log_level.upper(), logging.INFO)
     logger = init_logger(log_level=log_level, filename=os.path.join(root_dir, "logs", "tau_bench_eval.log"))
     
-    # generate_tau_bench_config(temp_output_dir)
-    # config_file = os.path.join(temp_output_dir, 'config.json')
-    # generate_taskgraph(config_file, temp_output_dir)
+    generate_tau_bench_config(temp_output_dir)
+    config_file = os.path.join(temp_output_dir, 'config.json')
+    generate_taskgraph(config_file, temp_output_dir)
 
     start_apis()
     run_tau_bench_eval(

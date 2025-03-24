@@ -11,14 +11,14 @@ class CancelPendingOrder(Tool):
         # check order exists and is pending
         orders = data["orders"]
         if order_id not in orders:
-            return "Error: order not found"
+            return "error: order not found"
         order = orders[order_id]
         if order["status"] != "pending":
-            return "Error: non-pending order cannot be cancelled"
+            return "error: non-pending order cannot be cancelled"
 
         # check reason
         if reason not in ["no longer needed", "ordered by mistake"]:
-            return "Error: invalid reason"
+            return "error: invalid reason"
 
         # handle refund
         refunds = []

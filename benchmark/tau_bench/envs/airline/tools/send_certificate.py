@@ -13,7 +13,7 @@ class SendCertificate(Tool):
     ) -> str:
         users = data["users"]
         if user_id not in users:
-            return "Error: user not found"
+            return "error: user not found"
         user = users[user_id]
 
         # add a certificate, assume at most 3 cases per task

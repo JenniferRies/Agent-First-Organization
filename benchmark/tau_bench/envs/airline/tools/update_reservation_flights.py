@@ -17,7 +17,7 @@ class UpdateReservationFlights(Tool):
     ) -> str:
         users, reservations = data["users"], data["reservations"]
         if reservation_id not in reservations:
-            return "Error: reservation not found"
+            return "error: reservation not found"
         reservation = reservations[reservation_id]
 
         # update flights and calculate price
@@ -63,15 +63,15 @@ class UpdateReservationFlights(Tool):
 
         # check payment
         if payment_id not in users[reservation["user_id"]]["payment_methods"]:
-            return "Error: payment method not found"
+            return "error: payment method not found"
         payment_method = users[reservation["user_id"]]["payment_methods"][payment_id]
         if payment_method["source"] == "certificate":
-            return "Error: certificate cannot be used to update reservation"
+            return "error: certificate cannot be used to update reservation"
         elif (
             payment_method["source"] == "gift_card"
             and payment_method["amount"] < total_price
         ):
-            return "Error: gift card balance is not enough"
+            return "error: gift card balance is not enough"
 
         # if checks pass, deduct payment and update seats
         if payment_method["source"] == "gift_card":
