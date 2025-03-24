@@ -288,9 +288,12 @@ class TaskGraph(TaskGraphBase):
         logger.info(f"available_nodes: {available_nodes}")
         
         if not list(self.graph.successors(curr_node)):  # leaf node
-            curr_node, params = NestedGraph.get_nested_graph_component_node(params, self.graph.nodes)
-            if flow_stack and not curr_node:  # there is previous unfinished flow
-                curr_node = flow_stack.pop()
+            nested_graph_next_node, params = NestedGraph.get_nested_graph_component_node(params, self.graph.nodes)
+            if nested_graph_next_node is not None:
+                curr_node = nested_graph_next_node
+            else:
+                if flow_stack:  # there is previous unfinished flow
+                    curr_node = flow_stack.pop()
         
         next_node = curr_node  # initialize next node as curr node
         params["curr_node"] = next_node
