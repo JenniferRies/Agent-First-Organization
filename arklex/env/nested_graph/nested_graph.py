@@ -1,7 +1,6 @@
 
 
 NESTED_GRAPH_ID = "NestedGraph"
-NESTED_GRAPH_NAME = "NestedGraph"
 
 class NestedGraph:
     def __init__(self, task, value):
