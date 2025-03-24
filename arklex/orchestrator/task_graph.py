@@ -155,7 +155,12 @@ class TaskGraph(TaskGraphBase):
                 value=node_info["attribute"]["value"],
             )
             next_node_id = nested_graph_node.get_nested_graph_start_node_id()
-            params["path"].append({"node_id": sample_node, "skipped": False})
+            params["path"].append({
+                "node_id": sample_node,
+                "to_node_id": node_info["attribute"]["value"],
+                "is_leaf": len(list(self.graph.successors(sample_node))) == 0,
+                "skipped": False
+            })
             node_info = self.graph.nodes[next_node_id]
             sample_node = next_node_id
         
@@ -177,7 +182,11 @@ class TaskGraph(TaskGraphBase):
         # This will be used to check whether we skip the worker or not, which is handled by the task graph framework
         skip = self._check_skip(node_info)
         logger.info(f"skip current node {sample_node}: {skip}")
-        params["path"].append({"node_id": sample_node, "skipped": skip})
+        params["path"].append({
+            "node_id": sample_node,
+            "skipped": skip,
+            "is_leaf": len(list(self.graph.successors(sample_node))) == 0,
+        })
         if skip: # continue check the candidate intents under this node
             node_info = {"id": None, "name": None, "attribute": None}
             for u, v, data in self.graph.out_edges(sample_node, data=True):
@@ -288,7 +297,7 @@ class TaskGraph(TaskGraphBase):
         logger.info(f"available_nodes: {available_nodes}")
         
         if not list(self.graph.successors(curr_node)):  # leaf node
-            nested_graph_next_node, params = NestedGraph.get_nested_graph_component_node(params, self.graph.nodes)
+            nested_graph_next_node, params = NestedGraph.get_nested_graph_component_node(params)
             if nested_graph_next_node is not None:
                 curr_node = nested_graph_next_node
             else:
