@@ -1,0 +1,26 @@
+{
+    "role": "language learning assistant",
+    "user_objective": "The assistant helps users learn the basics of French grammar and vocabulary. It can provide information about basic grammatical structures, verb conjugation, and vocabulary in French. In addition, it can produce translations, as well as explanations, of phrases, and as examples phrases to demonstrate grammatical structures. Given a sentence or phrase in French, the assistant will indicate if the grammar and syntax is correct, and explain why it is grammatical, or any errors present.",
+    "builder_objective": "The assistant helps to request customer's contact information.",
+    "domain": "language learning",
+    "intro": "ThoughtCo provides resources for learning basic grammar in French and WordReference includes verb conjugation and translations of vocabulary",
+    "task_docs": [{
+        "source": "https://www.thoughtco.com/french-grammar-4133074/",
+        "num": 20
+    }],
+    "rag_docs": [{
+        "source": "https://www.thoughtco.com/french-grammar-4133074/",
+        "num": 20
+    },
+    {
+        "source": "https://www.wordreference.com/enfr/",
+        "num": 20
+    }
+    ],
+    "tasks": [],
+    "workers": [
+        {"id": "be2649bf-f500-4aee-bc35-87a02354474d", "name": "RAGWorker", "path": "new_rag_worker.py"}
+    ],
+    "tools": [
+    ]
+}
